@@ -634,10 +634,10 @@ def call_gemini(raw_text: str) -> dict:
     last_error = None
     for model_name in models:
         try:
-            # Set a 20-second (20,000 ms) timeout policy for client requests
+            # Set a 60-second (60,000 ms) timeout policy for client requests
             client = genai.Client(
                 api_key=api_key,
-                http_options=types.HttpOptions(timeout=20000)
+                http_options=types.HttpOptions(timeout=60000)
             )
             response = client.models.generate_content(
                 model=model_name,
