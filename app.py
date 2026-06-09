@@ -112,6 +112,16 @@ st.markdown(
         padding: 2rem 2.4rem 2.5rem !important;
     }
 
+    /* Reset styles for nested columns so they don't inherit history panel or builder card styles */
+    [data-testid="column"] [data-testid="column"] {
+        background: transparent !important;
+        border: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
     /* ═══════════════════════════════════════════════════════
        HISTORY PANEL ELEMENTS
     ═══════════════════════════════════════════════════════ */
@@ -391,10 +401,17 @@ st.markdown(
         background: #fafcff !important;
         color: #1e293b !important;
     }
-    input {
-        color: #1e293b !important;
-    }
     textarea:focus {
+        border-color: #2c5364 !important;
+        box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.08) !important;
+    }
+    .stTextInput input {
+        background: #fafcff !important;
+        color: #1e293b !important;
+        border: 1px solid #dde8f0 !important;
+        border-radius: 7px !important;
+    }
+    .stTextInput input:focus {
         border-color: #2c5364 !important;
         box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.08) !important;
     }
