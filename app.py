@@ -422,21 +422,21 @@ st.markdown(
     .analytics-header {
         font-size: 0.64rem;
         font-weight: 700;
-        color: #94a3b8;
+        color: #ffffff;
         text-transform: uppercase;
         letter-spacing: 1.2px;
         margin-bottom: 0.8rem;
         padding-bottom: 0.4rem;
-        border-bottom: 1px solid #e8eef5;
+        border-bottom: 1px solid #1e3040;
     }
     .improvement-item {
         display: flex;
         align-items: flex-start;
         gap: 8px;
         padding: 5px 0;
-        border-bottom: 1px solid #f3f6fa;
+        border-bottom: 1px solid #162433;
         font-size: 0.78rem;
-        color: #334155;
+        color: #ffffff;
         line-height: 1.5;
     }
     .improvement-item:last-child { border-bottom: none; }
@@ -452,7 +452,7 @@ st.markdown(
         gap: 8px;
         padding: 4px 0;
         font-size: 0.75rem;
-        color: #94a3b8;
+        color: #e2e8f0;
         line-height: 1.5;
     }
     .missing-dot {
@@ -476,7 +476,7 @@ st.markdown(
     .section-label {
         font-size: 0.63rem;
         font-weight: 700;
-        color: #94a3b8;
+        color: #ffffff;
         text-transform: uppercase;
         letter-spacing: 1.3px;
         margin: 1.3rem 0 0.65rem;
@@ -913,16 +913,16 @@ def render_analytics(data: dict, raw_text: str):
     def _gauge(title, value, color):
         fig = go.Figure(go.Indicator(
             mode="gauge+number", value=value,
-            title={"text": title, "font": {"size": 12, "family": "Inter", "color": "#334155"}},
-            number={"suffix": "/100", "font": {"size": 20, "family": "Inter", "color": "#1e293b"}},
+            title={"text": title, "font": {"size": 12, "family": "Inter", "color": "#ffffff"}},
+            number={"suffix": "/100", "font": {"size": 20, "family": "Inter", "color": "#ffffff"}},
             gauge={
-                "axis": {"range": [0, 100], "tickfont": {"size": 9}, "tickcolor": "#94a3b8"},
+                "axis": {"range": [0, 100], "tickfont": {"size": 9, "color": "#ffffff"}, "tickcolor": "#ffffff"},
                 "bar": {"color": color, "thickness": 0.25},
-                "bgcolor": "#f8fafc", "bordercolor": "#e2e8f0",
+                "bgcolor": "#0d1e2c", "bordercolor": "#1e3040",
                 "steps": [
-                    {"range": [0,  40], "color": "#fef2f2"},
-                    {"range": [40, 70], "color": "#fefce8"},
-                    {"range": [70, 100], "color": "#f0fdf4"},
+                    {"range": [0,  40], "color": "#2a1510"},
+                    {"range": [40, 70], "color": "#282510"},
+                    {"range": [70, 100], "color": "#0a2218"},
                 ],
                 "threshold": {"line": {"color": color, "width": 2}, "thickness": 0.7, "value": value},
             },
@@ -980,10 +980,10 @@ def render_analytics(data: dict, raw_text: str):
                 hovertemplate="%{label}: %{value}<extra></extra>",
             ))
             fig_pie.update_layout(
-                title=dict(text="Resume Composition", font=dict(size=11, family="Inter", color="#334155"), x=0.5),
+                title=dict(text="Resume Composition", font=dict(size=11, family="Inter", color="#ffffff"), x=0.5),
                 height=260, margin=dict(t=36, b=8, l=8, r=8),
                 paper_bgcolor="rgba(0,0,0,0)", showlegend=True,
-                legend=dict(font=dict(size=9, family="Inter"), orientation="v"),
+                legend=dict(font=dict(size=9, family="Inter", color="#ffffff"), orientation="v"),
             )
             st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
 
@@ -1014,14 +1014,14 @@ def render_analytics(data: dict, raw_text: str):
                              hovertemplate="Optimised: %{y} words<extra></extra>"))
     fig_bar.update_layout(
         title=dict(text="Input Length vs. Resume Content",
-                   font=dict(size=11, family="Inter", color="#334155"), x=0),
+                   font=dict(size=11, family="Inter", color="#ffffff"), x=0),
         barmode="group", height=190, margin=dict(t=36, b=28, l=38, r=16),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        legend=dict(font=dict(size=9, family="Inter"), orientation="h",
+        legend=dict(font=dict(size=9, family="Inter", color="#ffffff"), orientation="h",
                     yanchor="bottom", y=1.02, xanchor="right", x=1),
-        yaxis=dict(gridcolor="#f1f5f9", title="Words", title_font=dict(size=9)),
-        xaxis=dict(showticklabels=False),
-        font=dict(family="Inter"),
+        yaxis=dict(gridcolor="#1e3040", title="Words", title_font=dict(size=9, color="#ffffff"), tickfont=dict(color="#ffffff")),
+        xaxis=dict(showticklabels=False, tickfont=dict(color="#ffffff")),
+        font=dict(family="Inter", color="#ffffff"),
     )
     st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
 
