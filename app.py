@@ -24,7 +24,7 @@ import streamlit.components.v1 as components
 # Page config
 # ──────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="ResumeForge — ATS Resume Builder",
+    page_title="ResumeLabs — ATS Resume Builder",
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -165,7 +165,7 @@ st.markdown(
     .hist-name {
         font-size: 0.8rem;
         font-weight: 600;
-        color: #bcd8e8;
+        color: #ffffff;
         margin-bottom: 1px;
         white-space: nowrap;
         overflow: hidden;
@@ -173,7 +173,7 @@ st.markdown(
     }
     .hist-date {
         font-size: 0.62rem;
-        color: #2a4a5c;
+        color: #94a3b8;
         margin-bottom: 6px;
     }
     .hist-scores {
@@ -196,7 +196,7 @@ st.markdown(
     .score-label { color: #254050; font-size: 0.6rem; margin-left: 2px; }
     .hist-snippet {
         font-size: 0.67rem;
-        color: #1e3040;
+        color: #e2e8f0;
         line-height: 1.45;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -1011,7 +1011,7 @@ st.markdown(
     """
     <div class="navbar">
       <div class="nav-brand">
-        <span class="brand-title">ResumeForge</span>
+        <span class="brand-title">ResumeLabs</span>
         <span class="brand-tagline">ATS Resume Builder</span>
       </div>
       <div class="nav-attribution">
@@ -1098,7 +1098,7 @@ with right_col:
         """
         <div class="hero">
           <div class="hero-badge">ATS-Optimised &nbsp;&middot;&nbsp; Powered by Gemini &nbsp;&middot;&nbsp; Free</div>
-          <h1>ResumeForge</h1>
+          <h1>ResumeLabs</h1>
           <p>Describe your background in any format — rough notes, a conversational summary,
           or an old resume draft. Gemini restructures and optimises it into a clean,
           recruiter-ready PDF.</p>
@@ -1544,7 +1544,7 @@ with right_col:
     st.markdown(
         """
         <div class="footer">
-            ResumeForge by <a href="https://deenlabs.tech" target="_blank" style="color: #2c5364; font-weight: 600; text-decoration: none;">deenlabs.tech</a> &nbsp;&middot;&nbsp; Powered by Google Gemini &amp; LaTeX<br>
+            ResumeLabs by <a href="https://deenlabs.tech" target="_blank" style="color: #2c5364; font-weight: 600; text-decoration: none;">deenlabs.tech</a> &nbsp;&middot;&nbsp; Powered by Google Gemini &amp; LaTeX<br>
             No resume data is stored or logged &nbsp;&middot;&nbsp;
             History is browser-session only &nbsp;&middot;&nbsp; Free to use
         </div>
