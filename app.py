@@ -1326,7 +1326,6 @@ with right_col:
                 try:
                     resume_data = call_gemini(raw_text)
                     st.session_state.resume_data = resume_data
-                    st.session_state.raw_input   = raw_text
                     st.write("Structured data received. Building LaTeX template...")
                 except json.JSONDecodeError as e:
                     st.error(f"Could not parse the AI response as structured data: {e}")
