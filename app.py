@@ -1,8 +1,6 @@
 """
 ATS Resume Builder — Streamlit + Google Gemini + LaTeX PDF
 ==========================================================
-Deploy on Streamlit Community Cloud.
-Add GEMINI_API_KEY to .streamlit/secrets.toml or as an environment variable.
 """
 
 import json
@@ -1051,7 +1049,7 @@ with left_col:
         st.markdown(
             '<div class="hist-empty">'
             'Generated resumes will appear here.<br><br>'
-            'History lives in this browser tab only — nothing reaches a server.'
+            'History lives in this browser tab only'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -1225,12 +1223,13 @@ with right_col:
 
             function init() {
                 ta = findTA();
-                if (!ta) { setTimeout(init, 500); return; }
+                if (!ta) { setTimeout(init, 100); return; }
 
                 /* Clear the native placeholder so it doesn't show through */
                 ta.setAttribute('placeholder', '');
 
                 buildOverlay();
+                showOverlay();
 
                 /* React to user interaction */
                 ta.addEventListener('focus', showOverlay);
@@ -1243,7 +1242,7 @@ with right_col:
                 }
             }
 
-            setTimeout(init, 700);
+            setTimeout(init, 50);
         })();
         </script>
         """,
