@@ -628,34 +628,36 @@ _SYSTEM_PROMPT = textwrap.dedent("""
 
 
 def call_gemini(raw_text: str) -> dict:
-    client = genai.Client(api_key=_get_api_key())
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=raw_text,
-            config=types.GenerateContentConfig(
-                system_instruction=_SYSTEM_PROMPT,
-                temperature=0.3,
-                response_mime_type="application/json",
-                response_schema=ResumeSchema,
-            ),
-        )
-        text = response.text.strip()
-        return json.loads(text)
-    except Exception as e:
-        st.warning("Gemini 2.0 Flash is currently unavailable or rate-limited. Falling back to Gemini 1.5 Flash...")
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=raw_text,
-            config=types.GenerateContentConfig(
-                system_instruction=_SYSTEM_PROMPT,
-                temperature=0.3,
-                response_mime_type="application/json",
-                response_schema=ResumeSchema,
-            ),
-        )
-        text = response.text.strip()
-        return json.loads(text)
+    models = ["gemini-3.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]
+    api_key = _get_api_key()
+    
+    last_error = None
+    for model_name in models:
+        try:
+            # Set a 20-second (20,000 ms) timeout policy for client requests
+            client = genai.Client(
+                api_key=api_key,
+                http_options=types.HttpOptions(timeout=20000)
+            )
+            response = client.models.generate_content(
+                model=model_name,
+                contents=raw_text,
+                config=types.GenerateContentConfig(
+                    system_instruction=_SYSTEM_PROMPT,
+                    temperature=0.3,
+                    response_mime_type="application/json",
+                    response_schema=ResumeSchema,
+                ),
+            )
+            text = response.text.strip()
+            return json.loads(text)
+        except Exception as e:
+            last_error = e
+            st.warning(f"{model_name} failed or timed out: {e}. Trying next available model...")
+            
+    # If all models in the list fail, report the error and raise the last exception
+    st.error("All available Gemini models failed or timed out.")
+    raise last_error
 
 
 # ──────────────────────────────────────────────────────────────────────────────
