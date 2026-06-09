@@ -1382,10 +1382,96 @@ with right_col:
             import base64
             try:
                 b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
-                pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="700px" type="application/pdf" style="border:1px solid #dde5ef; border-radius:8px;"></iframe>'
-                st.markdown(pdf_display, unsafe_allow_html=True)
+                
+                pdf_viewer_html = f"""
+                <style>
+                    html, body {{
+                        margin: 0;
+                        padding: 0;
+                        height: 100%;
+                        background: #f1f5f9;
+                        overflow: hidden;
+                    }}
+                    #pdf-container {{
+                        background: #f1f5f9;
+                        padding: 16px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 16px;
+                        align-items: center;
+                        overflow-y: auto;
+                        height: 100%;
+                        box-sizing: border-box;
+                    }}
+                    #loading {{
+                        color: #64748b;
+                        font-family: 'Inter', sans-serif;
+                        font-size: 14px;
+                        margin-top: 50px;
+                        text-align: center;
+                    }}
+                    canvas {{
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        border-radius: 4px;
+                        max-width: 100%;
+                        height: auto;
+                        background: #ffffff;
+                        display: block;
+                    }}
+                </style>
+                <div id="pdf-container">
+                    <div id="loading">Loading resume preview...</div>
+                </div>
+                <script type="module">
+                    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs';
+                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+
+                    function base64ToUint8Array(base64) {{
+                        const raw = atob(base64);
+                        const uint8Array = new Uint8Array(raw.length);
+                        for (let i = 0; i < raw.length; i++) {{
+                            uint8Array[i] = raw.charCodeAt(i);
+                        }}
+                        return uint8Array;
+                    }}
+
+                    const base64Data = "{b64_pdf}";
+                    const pdfData = base64ToUint8Array(base64Data);
+
+                    pdfjsLib.getDocument({{ data: pdfData }}).promise.then(async (pdf) => {{
+                        const container = document.getElementById('pdf-container');
+                        const loading = document.getElementById('loading');
+                        if (loading) loading.remove();
+
+                        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {{
+                            const page = await pdf.getPage(pageNum);
+                            const scale = 1.35;
+                            const viewport = page.getViewport({{ scale }});
+                            
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            
+                            container.appendChild(canvas);
+
+                            await page.render({{
+                                canvasContext: context,
+                                viewport: viewport
+                            }}).promise;
+                        }}
+                    }}).catch(err => {{
+                        const loading = document.getElementById('loading');
+                        if (loading) {{
+                            loading.textContent = 'Error loading preview: ' + err.message;
+                            loading.style.color = '#ef4444';
+                        }}
+                    }});
+                </script>
+                """
+                components.html(pdf_viewer_html, height=700)
             except Exception as e:
-                st.error("Could not render PDF preview in this browser, please download the file directly.")
+                st.error(f"Could not render PDF preview: {e}")
 
             st.markdown("<br>", unsafe_allow_html=True)
             candidate_name = name.replace(" ", "_")
