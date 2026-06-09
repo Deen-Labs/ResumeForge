@@ -629,18 +629,33 @@ _SYSTEM_PROMPT = textwrap.dedent("""
 
 def call_gemini(raw_text: str) -> dict:
     client = genai.Client(api_key=_get_api_key())
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=raw_text,
-        config=types.GenerateContentConfig(
-            system_instruction=_SYSTEM_PROMPT,
-            temperature=0.3,
-            response_mime_type="application/json",
-            response_schema=ResumeSchema,
-        ),
-    )
-    text = response.text.strip()
-    return json.loads(text)
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=raw_text,
+            config=types.GenerateContentConfig(
+                system_instruction=_SYSTEM_PROMPT,
+                temperature=0.3,
+                response_mime_type="application/json",
+                response_schema=ResumeSchema,
+            ),
+        )
+        text = response.text.strip()
+        return json.loads(text)
+    except Exception as e:
+        st.warning("Gemini 2.0 Flash is currently unavailable or rate-limited. Falling back to Gemini 1.5 Flash...")
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=raw_text,
+            config=types.GenerateContentConfig(
+                system_instruction=_SYSTEM_PROMPT,
+                temperature=0.3,
+                response_mime_type="application/json",
+                response_schema=ResumeSchema,
+            ),
+        )
+        text = response.text.strip()
+        return json.loads(text)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
