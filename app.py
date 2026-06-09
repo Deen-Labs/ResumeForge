@@ -220,6 +220,38 @@ st.markdown(
         padding-top: 0.6rem;
         border-top: 1px solid #112030;
     }
+    .hist-tip-card {
+        background: #112233;
+        border: 1px solid #1c3245;
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        margin-top: 0.8rem;
+    }
+    .hist-tip-card .title {
+        font-size: 0.58rem;
+        font-weight: 700;
+        color: #7fb8cc;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 0.45rem;
+    }
+    .hist-tip-item {
+        font-size: 0.65rem;
+        color: #90b8c5;
+        line-height: 1.5;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    .hist-tip-item:last-child {
+        margin-bottom: 0;
+    }
+    .hist-tip-desc {
+        font-size: 0.64rem;
+        color: #789cb0;
+        line-height: 1.5;
+    }
 
     /* ═══════════════════════════════════════════════════════
        HERO BANNER (inside right card)
@@ -1035,6 +1067,7 @@ for key, default in [
     ("raw_input",   ""),
     ("history",     []),
     ("load_idx",    None),
+    ("trigger_generate", False),
 ]:
     if key not in st.session_state:
         st.session_state[key] = default
@@ -1114,6 +1147,23 @@ with left_col:
         if st.button("Clear history", key="clear_history"):
             st.session_state.history = []
             st.rerun()
+
+    st.markdown(
+        """
+        <div class="hist-tip-card">
+            <div class="title">ATS Compliance Checklist</div>
+            <div class="hist-tip-item">✓ Standard single-column layout (built-in LaTeX)</div>
+            <div class="hist-tip-item">✓ High-impact action verbs (AI-optimized)</div>
+            <div class="hist-tip-item">✓ Quantified metrics (~ for estimates)</div>
+            <div class="hist-tip-item">✓ No graphics or text boxes that confuse parsers</div>
+        </div>
+        <div class="hist-tip-card">
+            <div class="title">Pro Tips</div>
+            <div class="hist-tip-desc">Need to adjust? Use the interactive tabs on the editor to modify fields and recompile the PDF instantly.</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.markdown(
         '<div class="hist-session-note">'
@@ -1298,6 +1348,7 @@ with right_col:
                 "Before that I was a freelancer and built some websites for local shops using React. "
                 "I graduated from state university in 2023 with a GPA of 3.4."
             )
+            st.session_state.trigger_generate = True
             st.rerun()
 
     raw_text = st.text_area(
@@ -1333,8 +1384,14 @@ with right_col:
     st.markdown("<br>", unsafe_allow_html=True)
     generate_btn = st.button("Generate ATS Resume", type="primary", use_container_width=True)
 
+    # Check if we should automatically trigger generation (e.g. after loading sample draft)
+    should_generate = generate_btn
+    if st.session_state.get("trigger_generate", False):
+        st.session_state.trigger_generate = False
+        should_generate = True
+
     # ── Pipeline ───────────────────────────────────────────────────────────
-    if generate_btn:
+    if should_generate:
         if not raw_text.strip():
             st.warning("The input field is empty. Please describe your experience before generating.")
         else:
