@@ -128,7 +128,7 @@ st.markdown(
     .hist-title {
         font-size: 0.64rem;
         font-weight: 700;
-        color: #3a5a6e;
+        color: #ffffff;
         text-transform: uppercase;
         letter-spacing: 1.8px;
     }
@@ -141,7 +141,7 @@ st.markdown(
         border-radius: 999px;
     }
     .hist-empty {
-        color: #1e3545;
+        color: #ffffff;
         font-size: 0.75rem;
         line-height: 1.7;
         text-align: center;
@@ -205,7 +205,7 @@ st.markdown(
     }
     .hist-session-note {
         font-size: 0.59rem;
-        color: #1a2e3c;
+        color: #ffffff;
         text-align: center;
         margin-top: 1rem;
         line-height: 1.6;
@@ -391,6 +391,10 @@ st.markdown(
         font-size: 0.84rem !important;
         line-height: 1.65 !important;
         background: #fafcff !important;
+        color: #1e293b !important;
+    }
+    input {
+        color: #1e293b !important;
     }
     textarea:focus {
         border-color: #2c5364 !important;
